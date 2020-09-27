@@ -1,0 +1,40 @@
+
+
+<div class="container">
+    <div class="page-header">
+        <h1 id="timeline">A brief history of the Underground </h1>
+    </div>
+    <ul class="timeline">
+
+@if (ComponentList != null)
+{
+@foreach (var item in ComponentList.OrderByDescending(x => x.Key))
+{
+    <li class='@(IsLeftSide ? "timeline" : "timeline-inverted")'>
+          <div class="timeline-badge warning"><i class="glyphicon glyphicon-credit-card"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">@item.Key</h4>
+            </div>
+            <div class="timeline-body">
+              @item.Value
+              </div>
+          </div>
+        </li>
+        IsLeftSide = !IsLeftSide;
+}
+}
+    </ul>
+</div>
+
+@code {
+  private Dictionary<string, string> ComponentList;
+      private bool IsLeftSide = true;
+
+      protected override async Task OnInitializedAsync()
+      {
+          Crawler example = new Crawler();
+          ComponentList = example
+          .GetComponent("https://tfl.gov.uk/corporate/about-tfl/culture-and-heritage/londons-transport-a-history/london-underground/a-brief-history-of-the-underground", "content-container", "p");
+      }
+}
